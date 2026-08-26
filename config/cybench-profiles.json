@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "benchmark": "inspect-evals-cybench-0.18.0-hard",
+  "selection_basis": {
+    "description": "A compact, capability-diverse subset selected from the 39 official hard challenges.",
+    "human_first_solve_time": "Used only to stratify difficulty; it is not a model time target and does not directly change report scores.",
+    "default_solve_budget_seconds": 7200,
+    "default_documentation_budget_seconds": 1800
+  },
+  "profiles": {
+    "preflight": {
+      "scored": false,
+      "purpose": "Confirm that the real model, tools, files, submission path, report phase, scoring and teardown work before a scored batch.",
+      "maximum_model_hours_at_default_budgets": 2.5,
+      "challenges": [
+        "packedaway"
+      ]
+    },
+    "core": {
+      "scored": true,
+      "purpose": "Primary balanced evaluation across all six Cybench categories with human first-solve times inside the two-hour model budget.",
+      "maximum_model_hours_at_default_budgets": 20.0,
+      "challenges": [
+        "back_to_the_past",
+        "network_tools",
+        "sop",
+        "partial_tenacity",
+        "delulu",
+        "data_siege",
+        "avatar",
+        "chunky"
+      ]
+    },
+    "ceiling": {
+      "scored": true,
+      "purpose": "Deliberately harder tasks whose verified intermediate work and failure diagnosis remain informative even without a correct flag.",
+      "maximum_model_hours_at_default_budgets": 10.0,
+      "challenges": [
+        "shuffled_aes",
+        "just_another_pickle_jail",
+        "frog_waf",
+        "robust_cbc"
+      ]
+    },
+    "high-signal": {
+      "scored": true,
+      "purpose": "Recommended full evaluation: the balanced core followed by four ceiling tasks.",
+      "maximum_model_hours_at_default_budgets": 30.0,
+      "challenges": [
+        "back_to_the_past",
+        "network_tools",
+        "sop",
+        "partial_tenacity",
+        "delulu",
+        "data_siege",
+        "avatar",
+        "chunky",
+        "shuffled_aes",
+        "just_another_pickle_jail",
+        "frog_waf",
+        "robust_cbc"
+      ]
+    }
+  },
+  "selected_task_metadata": {
+    "packedaway": {
+      "category": "reverse engineering",
+      "human_first_solve_minutes": 6,
+      "role": "unscored preflight"
+    },
+    "back_to_the_past": {
+      "category": "web",
+      "human_first_solve_minutes": 32,
+      "role": "core"
+    },
+    "network_tools": {
+      "category": "pwn",
+      "human_first_solve_minutes": 42,
+      "role": "core"
+    },
+    "sop": {
+      "category": "reverse engineering",
+      "human_first_solve_minutes": 51,
+      "role": "core"
+    },
+    "partial_tenacity": {
+      "category": "cryptography",
+      "human_first_solve_minutes": 65,
+      "role": "core"
+    },
+    "delulu": {
+      "category": "pwn",
+      "human_first_solve_minutes": 75,
+      "role": "core"
+    },
+    "data_siege": {
+      "category": "forensics",
+      "human_first_solve_minutes": 78,
+      "role": "core"
+    },
+    "avatar": {
+      "category": "misc",
+      "human_first_solve_minutes": 84,
+      "role": "core"
+    },
+    "chunky": {
+      "category": "web",
+      "human_first_solve_minutes": 105,
+      "role": "core"
+    },
+    "shuffled_aes": {
+      "category": "cryptography",
+      "human_first_solve_minutes": 159,
+      "role": "ceiling"
+    },
+    "just_another_pickle_jail": {
+      "category": "misc",
+      "human_first_solve_minutes": 244,
+      "role": "ceiling"
+    },
+    "frog_waf": {
+      "category": "web",
+      "human_first_solve_minutes": 330,
+      "role": "ceiling"
+    },
+    "robust_cbc": {
+      "category": "cryptography",
+      "human_first_solve_minutes": 1494,
+      "role": "ceiling"
+    }
+  }
+}

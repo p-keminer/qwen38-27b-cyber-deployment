@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "default_model_id": "uncensored-q6",
+  "llama_cpp": {
+    "repository": "https://github.com/ggml-org/llama.cpp.git",
+    "revision": "v0.2.0",
+    "expected_commit_prefix": "bb4caa754",
+    "expected_build_info": "b1-bb4caa754",
+    "server_port": 8080,
+    "default_context_size": 262144
+  },
+  "models": [
+    {
+      "id": "uncensored-q6",
+      "display_name": "Qwen3.8-27B Uncensored Q6_K",
+      "repo_id": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+      "revision": "dee0a3164d9e11bbbebf5b63f52ba99443d14fc3",
+      "filename": "Qwen3.8-27B-Uncensored-Q6_K.gguf",
+      "quantization": "Q6_K",
+      "expected_size_gb": 22.4,
+      "expected_size_bytes": 22430999968,
+      "sha256": "a50aa1478295b58ee3d93eabe02c17f6d5fcf6cb787fd8a0ab07ac629a46cae6",
+      "vision_projector": {
+        "filename": "Qwen3.8-27B-Uncensored-vision-f16.gguf",
+        "expected_size_bytes": 927606912,
+        "sha256": "5ac423f8a29059dc24e51bc6a43e9380dcd57a9347f28b62591e0b3f60b7081c"
+      },
+      "alias": "qwen3.8-27b-uncensored-q6",
+      "context_size": 262144
+    },
+    {
+      "id": "uncensored-q8",
+      "display_name": "Qwen3.8-27B Uncensored Q8_0",
+      "repo_id": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+      "revision": "dee0a3164d9e11bbbebf5b63f52ba99443d14fc3",
+      "filename": "Qwen3.8-27B-Uncensored-Q8_0.gguf",
+      "quantization": "Q8_0",
+      "expected_size_gb": 29.0,
+      "expected_size_bytes": 29047084448,
+      "sha256": "fb2cb9aa5407264aec6698faf41183f337809352abe0bd8fb750c0b689f4ced2",
+      "vision_projector": {
+        "filename": "Qwen3.8-27B-Uncensored-vision-f16.gguf",
+        "expected_size_bytes": 927606912,
+        "sha256": "5ac423f8a29059dc24e51bc6a43e9380dcd57a9347f28b62591e0b3f60b7081c"
+      },
+      "alias": "qwen3.8-27b-uncensored-q8",
+      "context_size": 65536
+    },
+    {
+      "id": "uncensored-q4",
+      "display_name": "Qwen3.8-27B Uncensored Q4_K_M",
+      "repo_id": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+      "revision": "dee0a3164d9e11bbbebf5b63f52ba99443d14fc3",
+      "filename": "Qwen3.8-27B-Uncensored-Q4_K_M.gguf",
+      "quantization": "Q4_K_M",
+      "expected_size_gb": 16.8,
+      "expected_size_bytes": 16810714528,
+      "sha256": "4c5e2db039e9325ac7724c8846c71356a24ad1cdfa28002d73ecb6be645f9675",
+      "vision_projector": {
+        "filename": "Qwen3.8-27B-Uncensored-vision-f16.gguf",
+        "expected_size_bytes": 927606912,
+        "sha256": "5ac423f8a29059dc24e51bc6a43e9380dcd57a9347f28b62591e0b3f60b7081c"
+      },
+      "alias": "qwen3.8-27b-uncensored-q4",
+      "context_size": 65536
+    },
+    {
+      "id": "whitehat-q4",
+      "display_name": "Qwen3.8-27B Whitehat UD-Q4_K_XL",
+      "repo_id": "QuaduxIT/Qwen3.8-27B-Whitehat-GGUF",
+      "revision": "518605d31e118e5fcf53b809f221db92195e5da2",
+      "filename": "Qwen3.8-27B-Whitehat-UD-Q4_K_XL.gguf",
+      "quantization": "UD-Q4_K_XL",
+      "expected_size_gb": 17.6,
+      "expected_size_bytes": 17559176608,
+      "sha256": "81482a6810cef511baafd7b1f0734695d59af25b7ed90003824a97ccdd129acd",
+      "vision_projector": {
+        "filename": "mmproj-F16.gguf",
+        "expected_size_bytes": 927607488,
+        "sha256": "cbb841a9ee0636b2ec172f5bb8df2ea8dfeb01e90fe7c6126581d662a0b4e43e"
+      },
+      "alias": "qwen3.8-27b-whitehat-q4",
+      "context_size": 65536
+    }
+  ]
+}

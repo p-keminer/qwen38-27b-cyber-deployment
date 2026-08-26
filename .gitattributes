@@ -1,0 +1,27 @@
+* text=auto eol=lf
+
+*.sh text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.psm1 text eol=lf
+*.json text eol=lf
+*.jsonc text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+Dockerfile* text eol=lf
+uv.lock text eol=lf
+
+*.eval binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.gguf binary

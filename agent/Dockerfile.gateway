@@ -1,0 +1,9 @@
+FROM nginx:1.29.1-alpine@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8
+
+RUN apk add --no-cache curl openssh-client
+
+COPY gateway-entrypoint.sh /usr/local/bin/qwen-gateway-entrypoint
+RUN chmod 0755 /usr/local/bin/qwen-gateway-entrypoint
+
+EXPOSE 18081
+ENTRYPOINT ["/usr/local/bin/qwen-gateway-entrypoint"]

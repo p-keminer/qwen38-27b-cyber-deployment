@@ -1,0 +1,37 @@
+FROM node:24.14.0-bookworm-slim@sha256:d8e448a56fc63242f70026718378bd4b00f8c82e78d20eefb199224a4d8e33d8
+
+ARG OPENCODE_VERSION=0.0.0-beta-17898
+ARG OPENCODE_INTEGRITY="sha512-Mcr+oYAreHxCOCLJaqrKHWcR8F8/nDxaxcWwaDDqZxtcGDYhyc+jvpoq/uF4KKp+TzTiLCQkAjjOZcdX52OR7g=="
+
+RUN apt-get update \
+    && apt-get install --yes --no-install-recommends \
+        bash \
+        ca-certificates \
+        curl \
+        git \
+        python3 \
+        ripgrep \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN test "$(npm view "@opencode-ai/cli@${OPENCODE_VERSION}" dist.integrity)" = "${OPENCODE_INTEGRITY}" \
+    && npm install --global --no-audit --no-fund "@opencode-ai/cli@${OPENCODE_VERSION}" \
+    && test "$(opencode2 --version)" = "opencode2 v${OPENCODE_VERSION}" \
+    && npm cache clean --force
+
+RUN groupadd --gid 10001 opencode \
+    && useradd --uid 10001 --gid 10001 --create-home --shell /bin/bash opencode \
+    && mkdir -p /home/opencode/.cache /home/opencode/.config /home/opencode/.local/share \
+    && chown -R 10001:10001 /home/opencode
+
+ENV HOME=/home/opencode \
+    XDG_CACHE_HOME=/home/opencode/.cache \
+    XDG_CONFIG_HOME=/home/opencode/.config \
+    XDG_DATA_HOME=/home/opencode/.local/share \
+    XDG_STATE_HOME=/home/opencode/.local/share/state \
+    OPENCODE_DISABLE_AUTOUPDATE=true
+
+USER 10001:10001
+WORKDIR /workspace/agent-workspace
+EXPOSE 4096
+
+ENTRYPOINT ["opencode2", "serve", "--hostname", "0.0.0.0", "--port", "4096"]

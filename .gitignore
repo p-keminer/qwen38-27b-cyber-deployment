@@ -1,0 +1,66 @@
+.env
+.env.*
+!.env.example
+.venv/
+.opencode/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+coverage.xml
+.cache/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.part
+*.partial
+
+# Private keys and host-specific SSH state
+*.key
+*.pem
+*.p12
+*.pfx
+*.ppk
+id_rsa*
+id_ed25519*
+known_hosts
+
+# User-supplied projects shared read/write with the OpenCode agent.
+agent-workspace/*
+!agent-workspace/.gitkeep
+
+# Generated evaluation artifacts can contain complete prompts and responses.
+artifacts/logs/*
+artifacts/mock-api/*
+artifacts/benchmarks/*
+artifacts/reviews/*
+artifacts/recovered-documentation/*
+artifacts/acceptance/*
+!artifacts/logs/.gitkeep
+!artifacts/mock-api/.gitkeep
+!artifacts/benchmarks/.gitkeep
+!artifacts/reviews/.gitkeep
+results/runs/*
+!results/runs/.gitkeep
+
+# Local process state
+*.pid
+
+# Local RunPod connection state and generated API key
+.runpod/
+
+# Remote deployment directories if a bundle is tested locally
+/models/
+/runtime/
+/state/
+/cache/
+/logs/
+
+# Local packaging/build output
+build/
+dist/
+*.egg-info/
+*.gguf

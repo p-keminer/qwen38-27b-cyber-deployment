@@ -1,0 +1,58 @@
+services:
+  opencode:
+    labels:
+      qwen-eval.network-mode: controlled-web-v1
+    depends_on:
+      controlled-web-proxy:
+        condition: service_healthy
+    environment:
+      HTTP_PROXY: http://controlled-web-proxy:3128
+      HTTPS_PROXY: http://controlled-web-proxy:3128
+      http_proxy: http://controlled-web-proxy:3128
+      https_proxy: http://controlled-web-proxy:3128
+      NO_PROXY: model-gateway,opencode,controlled-web-proxy,127.0.0.1,localhost
+      no_proxy: model-gateway,opencode,controlled-web-proxy,127.0.0.1,localhost
+      NODE_USE_ENV_PROXY: "1"
+    extra_hosts:
+      controlled-web-proxy: "172.30.240.3"
+
+  controlled-web-proxy:
+    profiles:
+      - controlled-web-v1
+    build:
+      context: .
+      dockerfile: Dockerfile.controlled-web
+    image: qwen-eval/controlled-web:1
+    container_name: qwen-eval-controlled-web
+    labels:
+      qwen-eval.network-mode: controlled-web-v1
+    environment:
+      CONTROLLED_WEB_DENY_HOSTS: ${RUNPOD_SSH_HOST:?RUNPOD_SSH_HOST is required}
+    restart: unless-stopped
+    networks:
+      agent-internal:
+        ipv4_address: 172.30.240.3
+      controlled-web-egress: {}
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=8m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 128m
+    cpus: 0.25
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "const n=require('node:net').connect(3128,'127.0.0.1');n.setTimeout(3000);n.on('connect',()=>n.write('GET http://127.0.0.1/ HTTP/1.1\\r\\nHost: 127.0.0.1\\r\\n\\r\\n'));n.on('data',d=>{n.destroy();process.exit(d.toString().startsWith('HTTP/1.1 403')?0:1)});n.on('error',()=>process.exit(1));n.on('timeout',()=>process.exit(1))"
+      interval: 5s
+      timeout: 4s
+      retries: 12
+      start_period: 5s
+
+networks:
+  controlled-web-egress: {}

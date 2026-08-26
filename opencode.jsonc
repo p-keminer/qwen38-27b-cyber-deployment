@@ -1,0 +1,132 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  // Primary Claude-Code/Codex-style chat path. The evaluation alias below is
+  // intentionally retained unchanged for reproducible benchmark launches.
+  "model": "runpod/uncensored-q6-interactive-v1",
+  "default_agent": "build",
+  "share": "disabled",
+  "plugins": ["-opencode.provider.opencode"],
+  "agents": {
+    "build": {
+      "model": "runpod/uncensored-q6-interactive-v1"
+    }
+  },
+  "experimental": {
+    "policies": [
+      {
+        "action": "provider.use",
+        "resource": "opencode",
+        "effect": "deny"
+      }
+    ]
+  },
+  "providers": {
+    "runpod": {
+      "name": "RunPod llama.cpp",
+      "package": "@opencode-ai/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "{env:LLAMACPP_BASE_URL}",
+        "apiKey": "internal-gateway"
+      },
+      "models": {
+        "uncensored-q6-interactive-v1": {
+          "modelID": "qwen3.8-27b-uncensored-q6",
+          "name": "Qwen3.8-27B Q6 (unbounded-interactive-v1)",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "limit": {
+            "context": 262144,
+            // Pinned OpenCode reserves min(output, 32000) before compaction.
+            // Match that safe per-call ceiling and allow unlimited chat turns
+            // instead of requesting a physically impossible 262k response.
+            "output": 32000
+          }
+        },
+        "uncensored-q6": {
+          "modelID": "qwen3.8-27b-uncensored-q6",
+          "name": "Qwen3.8-27B Uncensored Q6 (Evaluation standard)",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "limit": {
+            "context": 262144,
+            "output": 8192
+          }
+        },
+        "uncensored-q8": {
+          "modelID": "qwen3.8-27b-uncensored-q8",
+          "name": "Qwen3.8-27B Uncensored Q8 (Quality comparison)",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "limit": {
+            "context": 65536,
+            "output": 8192
+          }
+        },
+        "uncensored-q4": {
+          "modelID": "qwen3.8-27b-uncensored-q4",
+          "name": "Qwen3.8-27B Uncensored Q4 (Fast comparison)",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "limit": {
+            "context": 65536,
+            "output": 8192
+          }
+        },
+        "whitehat-q4": {
+          "modelID": "qwen3.8-27b-whitehat-q4",
+          "name": "Qwen3.8-27B Whitehat Q4",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "limit": {
+            "context": 65536,
+            "output": 8192
+          }
+        }
+      }
+    }
+  },
+  "media": {
+    "image": {
+      "auto_resize": true,
+      "max_width": 2000,
+      "max_height": 2000,
+      "max_base64_bytes": 5242880
+    }
+  },
+  "permissions": [
+    { "action": "*", "resource": "*", "effect": "ask" },
+    { "action": "read", "resource": "*", "effect": "allow" },
+    { "action": "glob", "resource": "*", "effect": "allow" },
+    { "action": "grep", "resource": "*", "effect": "allow" },
+    { "action": "question", "resource": "*", "effect": "allow" },
+    { "action": "edit", "resource": "*", "effect": "ask" },
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    { "action": "subagent", "resource": "*", "effect": "ask" },
+    // Native web tools always require a visible user decision. In offline-v1
+    // the container network still blocks them; controlled-web-v1 only supplies
+    // the filtered route after that approval.
+    { "action": "webfetch", "resource": "*", "effect": "ask" },
+    { "action": "websearch", "resource": "*", "effect": "ask" },
+    { "action": "external_directory", "resource": "*", "effect": "deny" },
+    { "action": "read", "resource": ".runpod/*", "effect": "deny" },
+    { "action": "edit", "resource": ".runpod/*", "effect": "deny" },
+    { "action": "read", "resource": "*.env", "effect": "deny" },
+    { "action": "read", "resource": "*.env.*", "effect": "deny" },
+    { "action": "edit", "resource": ".opencode/opencode.json", "effect": "deny" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "default_toolchain": "upstream-static-v1",
+  "schema_version": 1,
+  "toolchains": {
+    "upstream-static-v1": {
+      "agent_image": "aisiuk/evals-cybench-agent-sandbox:1.0.0@sha256:7785c777bf535f13218b3d2774e31f41994cf33f8bb16c79a1e0d94c61b186d5",
+      "description": "Digest-pinned upstream Kali image with its existing static analysis tools.",
+      "required_commands": [
+        "bash",
+        "file",
+        "objdump",
+        "python3",
+        "r2",
+        "radare2",
+        "strings",
+        "upx"
+      ],
+      "runtime_installation": false
+    }
+  }
+}
