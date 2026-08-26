@@ -1095,13 +1095,11 @@ $exfat = Assert-QwenModelBackupVolume -CanonicalPath 'D:\\vault'
         self.assertTrue(payload["ExfatAccepted"])
 
     def test_powershell_contract_verifies_marker_size_and_sha(self):
-        powershell = (
-            shutil.which("powershell.exe")
-            or shutil.which("pwsh")
-            or shutil.which("powershell")
-        )
+        powershell = shutil.which("powershell.exe")
+        if powershell is None and os.name == "nt":
+            powershell = shutil.which("pwsh") or shutil.which("powershell")
         if powershell is None:
-            self.skipTest("PowerShell is required")
+            self.skipTest("Windows PowerShell or WSL interop is required")
         with tempfile.TemporaryDirectory(dir=ROOT) as temporary:
             fixture = Path(temporary)
             project = fixture / "project"

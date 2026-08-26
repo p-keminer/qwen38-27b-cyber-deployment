@@ -25,6 +25,28 @@ def powershell_path(path: Path) -> str:
     return str(resolved)
 
 
+def supervisor_binding_fragment() -> str:
+    starter = source(STARTER)
+    fragment = "function ConvertTo-WslPath" + starter.split(
+        "function ConvertTo-WslPath", 1
+    )[1].split("function Get-StateValue", 1)[0]
+
+    # The production script runs on Windows, where GetFullPath canonicalizes
+    # drive-rooted paths. Ubuntu CI exercises the extracted binding logic in
+    # pwsh, so emulate only that normalization while retaining its strict
+    # drive-path validation and WSL conversion.
+    windows_normalization = "$fullPath = [IO.Path]::GetFullPath($WindowsPath)"
+    if fragment.count(windows_normalization) != 1:
+        raise AssertionError("Unexpected ConvertTo-WslPath implementation")
+    portable_normalization = """$fullPath = if ([IO.Path]::DirectorySeparatorChar -eq '/') {
+        $WindowsPath.Replace('/', '\\')
+    }
+    else {
+        [IO.Path]::GetFullPath($WindowsPath)
+    }"""
+    return fragment.replace(windows_normalization, portable_normalization, 1)
+
+
 class CybenchSupervisorBindingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -37,10 +59,7 @@ class CybenchSupervisorBindingTests(unittest.TestCase):
             raise unittest.SkipTest("PowerShell is required for binding tests")
 
     def invoke_exact_binding(self, tasks: list[dict[str, object]]) -> subprocess.CompletedProcess[str]:
-        starter = source(STARTER)
-        fragment = "function ConvertTo-WslPath" + starter.split(
-            "function ConvertTo-WslPath", 1
-        )[1].split("function Get-StateValue", 1)[0]
+        fragment = supervisor_binding_fragment()
         payload = json.dumps({"tasks": tasks})
         harness = f"""
 Set-StrictMode -Version Latest
@@ -86,10 +105,7 @@ catch {{
     def invoke_contract_health(
         self, *, state: str, provider_exit_code: int
     ) -> subprocess.CompletedProcess[str]:
-        starter = source(STARTER)
-        fragment = "function ConvertTo-WslPath" + starter.split(
-            "function ConvertTo-WslPath", 1
-        )[1].split("function Get-StateValue", 1)[0]
+        fragment = supervisor_binding_fragment()
         harness = f"""
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
