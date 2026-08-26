@@ -305,8 +305,12 @@ def prepare_backup_root(path: Path) -> Path:
         resolved = requested.resolve(strict=True)
     except (OSError, RuntimeError) as exc:
         raise UnsafePathError(f"Cannot resolve backup root safely: {requested}") from exc
-    if normalized_path_for_compare(resolved) != normalized_path_for_compare(requested):
-        raise UnsafePathError(f"Backup root contains path indirection: {requested}")
+    try:
+        same_location = os.path.samefile(requested, resolved)
+    except OSError as exc:
+        raise UnsafePathError(f"Cannot verify backup root identity: {requested}") from exc
+    if not same_location:
+        raise UnsafePathError(f"Backup root resolves to a different location: {requested}")
     if not resolved.is_dir():
         raise UnsafePathError(f"Backup root is not a directory: {requested}")
     return resolved
@@ -324,8 +328,6 @@ def assert_vault_path(
     assert_no_path_indirection(backup_root, "backup root")
     root = backup_root.resolve(strict=True)
     candidate = _absolute_path(path)
-    if not path_is_same_or_descendant(candidate, root):
-        raise UnsafePathError(f"{description} escapes the backup root: {candidate}")
     assert_no_path_indirection(candidate, description)
     try:
         resolved = candidate.resolve(strict=require_exists)

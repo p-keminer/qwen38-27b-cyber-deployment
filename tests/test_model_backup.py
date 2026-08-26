@@ -399,6 +399,43 @@ class ModelBackupTests(unittest.TestCase):
             self.assertFalse((external_target / "verification.json").exists())
             self.assertFalse((external_target / ".complete.json").exists())
 
+    def test_prepare_backup_root_rejects_symlink_or_junction(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            target = base / "physical-vault"
+            alias = base / "vault-link"
+            target.mkdir()
+            try:
+                os.symlink(target, alias, target_is_directory=True)
+            except OSError as exc:
+                if os.name != "nt":
+                    self.skipTest(f"directory symlinks are unavailable: {exc}")
+                powershell = shutil.which("powershell.exe") or shutil.which(
+                    "powershell"
+                )
+                if powershell is None:
+                    self.skipTest(f"directory links are unavailable: {exc}")
+                command = (
+                    "New-Item -ItemType Junction -Path "
+                    f"'{str(alias).replace("'", "''")}' -Target "
+                    f"'{str(target).replace("'", "''")}' | Out-Null"
+                )
+                created = subprocess.run(
+                    [powershell, "-NoProfile", "-Command", command],
+                    cwd=ROOT,
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                    check=False,
+                )
+                self.assertEqual(created.returncode, 0, created.stderr)
+
+            with self.assertRaisesRegex(
+                model_backup.UnsafePathError,
+                "path indirection",
+            ):
+                model_backup.prepare_backup_root(alias)
+
     def test_same_size_corruption_counts_full_replacement_capacity(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -808,6 +845,62 @@ class ModelBackupTests(unittest.TestCase):
             )
             self.assertTrue(os.path.samefile(prepared, prepared_with_other_case))
 
+    @unittest.skipUnless(os.name == "nt", "Windows 8.3 path semantics required")
+    def test_python_accepts_8dot3_alias_for_same_physical_vault(self):
+        import ctypes
+
+        get_short_path = ctypes.WinDLL(
+            "kernel32", use_last_error=True
+        ).GetShortPathNameW
+        get_short_path.argtypes = (
+            ctypes.c_wchar_p,
+            ctypes.c_wchar_p,
+            ctypes.c_uint32,
+        )
+        get_short_path.restype = ctypes.c_uint32
+
+        def short_path(path: Path) -> Path:
+            size = get_short_path(str(path), None, 0)
+            if size == 0:
+                self.skipTest("Windows short-path aliases are unavailable")
+            buffer = ctypes.create_unicode_buffer(size)
+            written = get_short_path(str(path), buffer, size)
+            if written == 0 or written >= size:
+                self.fail("GetShortPathNameW failed for the regression fixture")
+            return Path(buffer.value)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            vault = base / "model backup vault with long name"
+            vault.mkdir()
+            artifact = vault / "model-artifact.gguf"
+            artifact.write_bytes(b"8dot3-regression")
+            alias = short_path(vault)
+            if os.path.normcase(os.path.normpath(alias)) == os.path.normcase(
+                os.path.normpath(vault)
+            ):
+                self.skipTest("The test volume does not expose a distinct 8.3 alias")
+
+            prepared = model_backup.prepare_backup_root(alias)
+            self.assertTrue(os.path.samefile(prepared, vault))
+            resolved_artifact = model_backup.assert_vault_path(
+                alias / artifact.name,
+                prepared,
+                "8.3 alias artifact",
+                require_exists=True,
+            )
+            self.assertTrue(os.path.samefile(resolved_artifact, artifact))
+
+            outside = base / "outside-vault.gguf"
+            outside.write_bytes(b"outside")
+            with self.assertRaises(model_backup.UnsafePathError):
+                model_backup.assert_vault_path(
+                    outside,
+                    prepared,
+                    "outside artifact",
+                    require_exists=True,
+                )
+
     def test_manifest_snapshots_are_write_once_and_preserve_compatibility_bytes(self):
         with tempfile.TemporaryDirectory() as temporary:
             base = Path(temporary)
@@ -895,6 +988,30 @@ class ModelBackupTests(unittest.TestCase):
         wsl = shutil.which("wsl.exe")
         if wsl is None:
             self.skipTest("WSL is not installed")
+        try:
+            preflight = subprocess.run(
+                [
+                    wsl,
+                    "-d",
+                    "Ubuntu-24.04",
+                    "-u",
+                    "qwen-eval",
+                    "--exec",
+                    "/bin/true",
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                timeout=30,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            self.skipTest(f"WSL Ubuntu-24.04/qwen-eval preflight unavailable: {exc}")
+        if preflight.returncode != 0:
+            self.skipTest(
+                "WSL Ubuntu-24.04 with user qwen-eval is not available "
+                f"(exit {preflight.returncode})"
+            )
         result = subprocess.run(
             [
                 wsl,
