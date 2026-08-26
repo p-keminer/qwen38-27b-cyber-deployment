@@ -6,9 +6,8 @@ mit Linux-Containern sowie WSL2 `Ubuntu-24.04` mit dem Benutzer `qwen-eval`.
 ## 1. Repository einrichten
 
 ```powershell
-$RepositoryUrl = Read-Host 'Git repository URL'
-git clone $RepositoryUrl qwen38-27b-cyber-evaluation
-Set-Location .\qwen38-27b-cyber-evaluation
+git clone https://github.com/p-keminer/qwen38-27b-cyber-deployment.git
+Set-Location .\qwen38-27b-cyber-deployment
 
 wsl.exe -d Ubuntu-24.04 -u qwen-eval --cd (Get-Location).Path -- bash scripts/install-uv.sh
 wsl.exe -d Ubuntu-24.04 -u qwen-eval --cd (Get-Location).Path -- bash scripts/bootstrap-local.sh

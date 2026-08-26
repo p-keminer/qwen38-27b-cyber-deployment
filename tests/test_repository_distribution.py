@@ -68,7 +68,8 @@ class RepositoryDistributionTests(unittest.TestCase):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
 
         for required in (
-            "git clone $RepositoryUrl",
+            "git clone https://github.com/p-keminer/qwen38-27b-cyber-deployment.git",
+            "Set-Location .\\qwen38-27b-cyber-deployment",
             "scripts/install-uv.sh",
             "scripts/bootstrap-local.sh",
             "runpod-provision.ps1 -OutputFormat Json",
