@@ -11,10 +11,6 @@
 
 <a id="deutsch"></a>
 
-<div align="center">
-
-`LOCAL LLM` · `RUNPOD` · `CYBER EVALUATION`
-
 # Qwen3.8-27B RunPod Agent
 
 Reproduzierbares A100-Deployment, lokale Modellsicherung, isolierte
@@ -22,8 +18,14 @@ Chat-Oberfläche und Cybench-Evaluationswerkzeuge für `Qwen3.8-27B`.
 
 `A100 80 GB` · `Q6_K` · `llama.cpp` · `OpenCode` · `Inspect AI` · `Cybench`
 
-[`Übersicht`](#de-uebersicht) [`Ablauf`](#de-ablauf) [`Einstieg`](#de-einstieg)
-[`Skripte`](#de-skripte) [`Lokale Daten`](#de-lokale-daten) [`Lizenz`](#de-lizenz)
+<div align="center">
+
+[![Übersicht](https://img.shields.io/badge/%C3%9Cbersicht-24292f?style=for-the-badge)](#de-uebersicht)
+[![Ablauf](https://img.shields.io/badge/Ablauf-24292f?style=for-the-badge)](#de-ablauf)
+[![Einstieg](https://img.shields.io/badge/Einstieg-24292f?style=for-the-badge)](#de-einstieg)
+[![Skripte](https://img.shields.io/badge/Skripte-24292f?style=for-the-badge)](#de-skripte)
+[![Lokale Daten](https://img.shields.io/badge/Lokale_Daten-24292f?style=for-the-badge)](#de-lokale-daten)
+[![Lizenz](https://img.shields.io/badge/Lizenz-24292f?style=for-the-badge)](#de-lizenz)
 
 </div>
 
@@ -111,17 +113,13 @@ Modellartefakte und weitere Drittinhalte behalten ihre jeweiligen Lizenzen.
 
 <div align="center">
 
-[`Nach oben`](#top)
+[![Nach oben](https://img.shields.io/badge/⬆_Nach_oben-24292f?style=for-the-badge)](#top)
 
 </div>
 
 ---
 
 <a id="english"></a>
-
-<div align="center">
-
-`LOCAL LLM` · `RUNPOD` · `CYBER EVALUATION`
 
 # Qwen3.8-27B RunPod Agent
 
@@ -130,8 +128,14 @@ Cybench evaluation tooling for `Qwen3.8-27B`.
 
 `A100 80 GB` · `Q6_K` · `llama.cpp` · `OpenCode` · `Inspect AI` · `Cybench`
 
-[`Overview`](#en-overview) [`Workflow`](#en-workflow) [`Getting started`](#en-getting-started)
-[`Scripts`](#en-scripts) [`Local data`](#en-local-data) [`License`](#en-license)
+<div align="center">
+
+[![Overview](https://img.shields.io/badge/Overview-24292f?style=for-the-badge)](#en-overview)
+[![Workflow](https://img.shields.io/badge/Workflow-24292f?style=for-the-badge)](#en-workflow)
+[![Getting started](https://img.shields.io/badge/Getting_Started-24292f?style=for-the-badge)](#en-getting-started)
+[![Scripts](https://img.shields.io/badge/Scripts-24292f?style=for-the-badge)](#en-scripts)
+[![Local data](https://img.shields.io/badge/Local_Data-24292f?style=for-the-badge)](#en-local-data)
+[![License](https://img.shields.io/badge/License-24292f?style=for-the-badge)](#en-license)
 
 </div>
 
@@ -217,6 +221,6 @@ licenses.
 
 <div align="center">
 
-[`Back to top`](#top)
+[![Back to top](https://img.shields.io/badge/⬆_Back_to_top-24292f?style=for-the-badge)](#top)
 
 </div>
