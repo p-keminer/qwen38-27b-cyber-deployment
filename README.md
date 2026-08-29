@@ -43,7 +43,7 @@ unter `http://127.0.0.1:4096`.
 | Einrichtung und Betrieb | [QUICKSTART.md](QUICKSTART.md#deutsch) |
 | Modellvarianten, Revisionen und SHA-256-Werte | [config/models.json](config/models.json) |
 | Hardware-, Kosten- und Deploymentvertrag | [config/runpod-a100-pcie-deployment.json](config/runpod-a100-pcie-deployment.json) |
-| Projektlizenz | [Apache License 2.0](LICENSE) |
+| Projektlizenz | [Apache-2.0](LICENSE) |
 
 <a id="de-ablauf"></a>
 
@@ -151,7 +151,7 @@ tunnel exposes the isolated OpenCode interface only at
 | Setup and operation | [QUICKSTART.md](QUICKSTART.md#english) |
 | Model variants, revisions, and SHA-256 values | [config/models.json](config/models.json) |
 | Hardware, cost, and deployment contract | [config/runpod-a100-pcie-deployment.json](config/runpod-a100-pcie-deployment.json) |
-| Project license | [Apache License 2.0](LICENSE) |
+| Project license | [Apache-2.0](LICENSE) |
 
 <a id="en-workflow"></a>
 
