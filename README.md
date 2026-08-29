@@ -16,8 +16,6 @@
 Reproduzierbares A100-Deployment, lokale Modellsicherung, isolierte
 Chat-Oberfläche und Cybench-Evaluationswerkzeuge für `Qwen3.8-27B`.
 
-`A100 80 GB` · `Q6_K` · `llama.cpp` · `OpenCode` · `Inspect AI` · `Cybench`
-
 <div align="center">
 
 [![Übersicht](https://img.shields.io/badge/%C3%9Cbersicht-24292f?style=for-the-badge)](#de-uebersicht)
@@ -125,8 +123,6 @@ Modellartefakte und weitere Drittinhalte behalten ihre jeweiligen Lizenzen.
 
 Reproducible A100 deployment, local model backup, isolated chat interface, and
 Cybench evaluation tooling for `Qwen3.8-27B`.
-
-`A100 80 GB` · `Q6_K` · `llama.cpp` · `OpenCode` · `Inspect AI` · `Cybench`
 
 <div align="center">
 
